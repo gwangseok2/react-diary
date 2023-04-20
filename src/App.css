@@ -98,3 +98,38 @@ textarea {
   font-size: 14px;
   margin-top: 30px;
 }
+
+/* DiaryItem 컴포넌트 */
+.DiaryItem {
+  list-style: none;
+  width: 89.33%;
+  box-sizing: border-box;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 01px 2px rgba(0, 0, 0, 0.1);
+}
+
+.DiaryItem li {
+  font-size: 20px;
+  text-align: left;
+}
+
+.DiaryItem li:nth-child(1) {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.DiaryItem li:nth-child(2) span {
+  display: block;
+  border: 1px dashed #ccc;
+  min-height: 100px;
+  box-sizing: border-box;
+  padding: 5px;
+  margin: 10px 0;
+}
+
+.DiaryItem li:nth-child(3),
+.DiaryItem li:nth-child(4) {
+  font-size: 15px;
+}

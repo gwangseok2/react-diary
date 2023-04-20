@@ -1,13 +1,13 @@
 import { useRef, useState } from "react"
 
-const DiaryEditor = () => {
-
+const DiaryEditor = ({ onCreate }) => {
   // react에서의 dom조작
   const authorInput = useRef();
   const contentsArea = useRef();
 
   // 동작이 비슷하면 하나로 묶어서 쓸 수 있다
   const [state, setState] = useState({
+    id: 0,
     author: "",
     contents: "",
     emotion: 1,
@@ -35,9 +35,15 @@ const DiaryEditor = () => {
       return
     }
 
-    alert("저장성공");
+    alert("저장완료");
+    onCreate(state.author, state.contents, state.emotion);
+    setState({
+      author: '',
+      contents: '',
+      emotion: 1,
+    })
+
   }
-  console.log(state)
   return (
     <div className="DiaryEditor">
       <h2>오늘의 일기</h2>
