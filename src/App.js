@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
@@ -23,6 +23,8 @@ function App() {
     setData([newItem, ...data])
   };
 
+
+
   // 딜리트
   const onRemove = (targetId) => {
     console.log(targetId);
@@ -37,6 +39,29 @@ function App() {
       data.map((el) => el.id === targetId ? { ...el, contents: newContents } : el)
     )
   }
+
+
+  useEffect(() => {
+    console.log("데이터가 변경되면 실행된다.", data);
+    if (data.length === 0) {
+      return
+    }
+    localStorage.removeItem("data");
+    localStorage.setItem("data", JSON.stringify(data))
+  }, [data])
+
+  useEffect(() => {
+    const localListData = localStorage.getItem("data");
+    console.log(localListData, '컴포넌트 로드시 실행',)
+    if (localListData) {
+      const loadLocalStorage = () => {
+        console.log(localListData, '로컬데이터')
+        setData(JSON.parse(localListData))
+
+      }
+      loadLocalStorage()
+    }
+  }, [])
 
   return (
     <div className="App">
