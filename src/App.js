@@ -53,7 +53,6 @@ function App() {
     const localListData = localStorage.getItem("data");
     if (localListData) {
       const loadLocalStorage = () => {
-        console.log(localListData, '로컬데이터')
         setData(JSON.parse(localListData))
 
       }
