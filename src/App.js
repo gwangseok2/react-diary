@@ -6,20 +6,24 @@ import DiaryList from './DiaryList';
 
 function App() {
   const [data, setData] = useState([]);
-
-  const dataId = useRef(0);
-
+  const testData = JSON.parse(localStorage.getItem("data"));
+  let dataId = useRef(0);
+  dataId = testData ? Math.max.apply(Math, testData.map(function (o) { return o.id; })) + 1 : dataId;
+  if (testData) {
+    console.log(Math.max.apply(Math, testData.map(function (o) { return o.id; })) + 1, '테스트')
+  }
   // 함수를 전달해서 프롭으로 내려서 이벤트처리
   const onCreate = (author, contents, emotion) => {
+
     const createDttm = new Date().getTime();
     const newItem = {
-      id: dataId.current,
+      id: testData ? dataId : dataId.current,
       author,
       contents,
       emotion,
       createDttm
     }
-    dataId.current += 1;
+    dataId += 1;
     setData([newItem, ...data])
   };
 
