@@ -52,6 +52,7 @@
 .DiaryEditor {
   padding: 30px;
   width: 89.33%;
+  max-width: 1024px;
   margin: 30px auto;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -114,6 +115,7 @@ textarea {
 .DiaryItem {
   list-style: none;
   width: 89.33%;
+  max-width: 1024px;
   box-sizing: border-box;
   margin: 20px auto;
   padding: 20px;
