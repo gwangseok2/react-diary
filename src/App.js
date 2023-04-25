@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} />
+      {data.length < 1 ? <></> : <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} />}
     </div>
   );
 }
