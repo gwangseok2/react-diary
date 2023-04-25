@@ -9,9 +9,7 @@ function App() {
   const testData = JSON.parse(localStorage.getItem("data"));
   let dataId = useRef(0);
   dataId = testData ? Math.max.apply(Math, testData.map(function (o) { return o.id; })) + 1 : dataId;
-  if (testData) {
-    console.log(Math.max.apply(Math, testData.map(function (o) { return o.id; })) + 1, '테스트')
-  }
+
   // 함수를 전달해서 프롭으로 내려서 이벤트처리
   const onCreate = (author, contents, emotion) => {
 
@@ -31,14 +29,12 @@ function App() {
 
   // 딜리트
   const onRemove = (targetId) => {
-    console.log(targetId);
     const newDiaryList = data.filter((el) => el.id !== targetId);
     setData(newDiaryList);
   }
 
   // 수정하기
   const onUpdate = (targetId, newContents) => {
-    console.log(targetId, newContents)
     setData(
       data.map((el) => el.id === targetId ? { ...el, contents: newContents } : el)
     )
@@ -46,7 +42,6 @@ function App() {
 
 
   useEffect(() => {
-    console.log("데이터가 변경되면 실행된다.", data);
     if (data.length === 0) {
       return
     }
@@ -56,7 +51,6 @@ function App() {
 
   useEffect(() => {
     const localListData = localStorage.getItem("data");
-    console.log(localListData, '컴포넌트 로드시 실행',)
     if (localListData) {
       const loadLocalStorage = () => {
         console.log(localListData, '로컬데이터')

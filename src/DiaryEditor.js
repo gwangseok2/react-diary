@@ -21,7 +21,7 @@ const DiaryEditor = ({ onCreate }) => {
   }
 
   const saveDiary = () => {
-    console.log(state)
+    // console.log(state)
     if (state.author.length < 1) {
       alert("작성자는 최소 1글자 이상 입력해주세요.");
       // react current프로퍼티로 불러와서 사용가능.
