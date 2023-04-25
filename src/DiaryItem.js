@@ -13,6 +13,9 @@ const DiaryItem = ({ author, contents, createDttm, emotion, id, onRemove, onUpda
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => {
     setIsEdit(!isEdit);
+    setTimeout(() => {
+      localContentInput.current.focus();
+    })
   }
 
   const cancleEdit = () => {
