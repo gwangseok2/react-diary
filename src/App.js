@@ -30,10 +30,18 @@ function App() {
     setData(newDiaryList);
   }
 
+  // 수정하기
+  const onUpdate = (targetId, newContents) => {
+    console.log(targetId, newContents)
+    setData(
+      data.map((el) => el.id === targetId ? { ...el, contents: newContents } : el)
+    )
+  }
+
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} onRemove={onRemove} />
+      <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} />
     </div>
   );
 }
