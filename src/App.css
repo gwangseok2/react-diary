@@ -4,10 +4,12 @@
   margin: 0;
   padding: 0;
   font-family: 'Noto Sans KR', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .App {
   text-align: center;
+  padding: 40px 0;
 }
 
 .App-logo {
@@ -50,10 +52,10 @@
 /* DiaryEditor컴포넌트 */
 
 .DiaryEditor {
-  padding: 30px;
+  padding: 5.333%;
   width: 89.33%;
   max-width: 1024px;
-  margin: 30px auto;
+  margin: 0 auto;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
@@ -84,6 +86,10 @@ textarea {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.DiaryEditor h2 {
+  margin-bottom: 30px;
 }
 
 .DiaryEditor h3 {
@@ -117,8 +123,8 @@ textarea {
   width: 89.33%;
   max-width: 1024px;
   box-sizing: border-box;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 20px auto 0;
+  padding: 5.333%;
   border: 1px solid #ccc;
   box-shadow: 01px 2px rgba(0, 0, 0, 0.1);
 }
@@ -134,6 +140,7 @@ textarea {
 }
 
 .DiaryItem li:nth-child(2) span {
+  position: relative;
   display: block;
   border: 1px dashed #ccc;
   min-height: 100px;
@@ -142,6 +149,7 @@ textarea {
   margin: 10px 0;
   font-size: 14px;
   font-weight: 500;
+  overflow: hidden;
 }
 
 .DiaryItem li:nth-child(3),
@@ -150,10 +158,15 @@ textarea {
 }
 
 .DiaryItem textarea {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
   display: block;
   font-size: 14px;
   resize: none;
-  min-height: 80%;
+  min-height: inherit;
   outline: none;
   border: none;
   margin: 0;
@@ -169,4 +182,45 @@ textarea {
   border-radius: 8px;
   margin-top: 7px;
   font-size: 12px;
+}
+
+.diary-list {
+  margin-top: 50px;
+}
+
+/* Dark Mode Btn css */
+.App.dark {
+  background-color: #000;
+}
+
+.App.dark h1,
+.App.dark h2,
+.App.dark h3,
+.App.dark h4,
+.App.dark h5,
+.App.dark span,
+.App.dark div,
+.App.dark ul,
+.App.dark li,
+.App.dark button,
+.App.dark textarea,
+.App.dark select,
+.App.dark input {
+  color: #fff;
+  background-color: #000;
+}
+
+.App.dark input::placeholder {
+  color: #fff;
+}
+
+.App.dark textarea::placeholder {
+  color: #fff;
+}
+
+.App.dark select,
+.App.dark input,
+.App.dark button {
+  border: 1px solid #fff;
+  background-color: #000;
 }

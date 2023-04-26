@@ -29,8 +29,11 @@ const DiaryItem = ({ author, contents, createDttm, emotion, id, onRemove, onUpda
       localContentInput.current.focus();
       return;
     }
-    onUpdate(id, localContent)
-    setIsEdit(false);
+
+    if (window.confirm('일기를 수정 하시겠습니까?')) {
+      onUpdate(id, localContent)
+      setIsEdit(false);
+    }
   }
 
 

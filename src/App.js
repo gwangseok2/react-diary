@@ -2,9 +2,20 @@ import { useRef, useState, useEffect } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
+import * as React from 'react';
+import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 
 function App() {
+  const darkModeCheck = JSON.parse(localStorage.getItem('darkmode'));
+
+  // 다크모드 관련 스테이트
+  const [isDarkMode, setDarkMode] = React.useState(darkModeCheck ? true : false);
+  const toggleDarkMode = (checked) => {
+    setDarkMode(checked);
+    localStorage.setItem('darkmode', JSON.stringify(checked));
+  };
+
   const [data, setData] = useState([]);
   const testData = JSON.parse(localStorage.getItem("data"));
   let dataId = useRef(0);
@@ -31,7 +42,7 @@ function App() {
   const onRemove = (targetId) => {
     const newDiaryList = data.filter((el) => el.id !== targetId);
     if (testData) {
-      localStorage.clear();
+      localStorage.removeItem("data");
       localStorage.setItem("data", JSON.stringify(newDiaryList));
     }
     setData(newDiaryList);
@@ -58,17 +69,22 @@ function App() {
     if (localListData) {
       const loadLocalStorage = () => {
         setData(JSON.parse(localListData))
-
       }
       loadLocalStorage()
     }
   }, [])
 
   return (
-    <div className="App">
+    <div className={isDarkMode ? 'App dark' : 'App'} >
       <DiaryEditor onCreate={onCreate} />
       {data.length < 1 ? <></> : <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} />}
-    </div>
+      <DarkModeSwitch
+        style={{ marginBottom: '2rem', position: 'fixed', left: '1.333%', top: '20px' }}
+        checked={isDarkMode}
+        onChange={toggleDarkMode}
+        size={80}
+      />
+    </div >
   );
 }
 
