@@ -30,6 +30,10 @@ function App() {
   // 딜리트
   const onRemove = (targetId) => {
     const newDiaryList = data.filter((el) => el.id !== targetId);
+    if (testData) {
+      localStorage.clear();
+      localStorage.setItem("data", JSON.stringify(newDiaryList));
+    }
     setData(newDiaryList);
   }
 
