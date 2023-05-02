@@ -77,7 +77,8 @@ function App() {
   return (
     <div className={isDarkMode ? 'App dark' : 'App'} >
       <DiaryEditor onCreate={onCreate} />
-      {data.length < 1 ? <></> : <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} />}
+      {data.length > 0 && <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} />}
+
       <DarkModeSwitch
         style={{ marginBottom: '2rem', position: 'fixed', left: '1.333%', top: '20px' }}
         checked={isDarkMode}
