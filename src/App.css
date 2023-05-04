@@ -7,6 +7,11 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+ul,
+ol {
+  list-style: none;
+}
+
 .App {
   text-align: center;
   padding: 40px 0;
@@ -223,4 +228,19 @@ textarea {
 .App.dark button {
   border: 1px solid #fff;
   background-color: #000;
+}
+
+/* diaryInfo */
+
+.DiaryInfo {
+  width: 89.33%;
+  max-width: 1024px;
+  margin: 0 auto;
+  font-size: 15px;
+  text-align: left;
+  padding: 0 5.333%;
+}
+
+.DiaryInfo li {
+  margin-top: 5px;
 }

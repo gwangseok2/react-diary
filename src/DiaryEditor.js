@@ -1,6 +1,9 @@
-import { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 const DiaryEditor = ({ onCreate }) => {
+
+  useEffect(() => console.log("diaryEditor 랜더"))
+
   // react에서의 dom조작
   const authorInput = useRef();
   const contentsArea = useRef();
@@ -68,4 +71,4 @@ const DiaryEditor = ({ onCreate }) => {
   )
 }
 
-export default DiaryEditor
+export default React.memo(DiaryEditor)
