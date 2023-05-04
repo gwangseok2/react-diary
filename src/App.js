@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { useRef, useEffect, useMemo, useCallback, useReducer } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
@@ -6,6 +6,29 @@ import * as React from 'react';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 // https://jsonplaceholder.typicode.com/comments
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'CREATE': {
+      const createDttm = new Date().getTime();
+      const newItem = {
+        ...action.data,
+        createDttm
+      }
+      return [newItem, ...state];
+    }
+    case 'REMOVE': {
+      return state.filter((el) => el.id !== action.targetId);
+    }
+    case 'UPDATE': {
+      return state.map((el) => el.id === action.targetId ? { ...el, contents: action.newContents } : el)
+    }
+    case 'LOCALSTORAGE': {
+      return [...action.data];
+    }
+    default: return state;
+  }
+}
 
 function App() {
   const darkModeCheck = JSON.parse(localStorage.getItem('darkmode'));
@@ -30,33 +53,33 @@ function App() {
     localStorage.setItem('darkmode', JSON.stringify(checked));
   };
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+
+  const [data, dispatch] = useReducer(reducer, []);
+
   const testData = JSON.parse(localStorage.getItem("data"));
   let dataId = useRef(0);
   dataId = testData ? Math.max.apply(Math, testData.map(function (o) { return o.id; })) + 1 : dataId;
   // 함수를 전달해서 프롭으로 내려서 이벤트처리
   const onCreate = useCallback(
     (author, contents, emotion) => {
-      const createDttm = new Date().getTime();
-      const newItem = {
-        id: testData ? dataId : dataId.current,
-        author,
-        contents,
-        emotion,
-        createDttm
-      }
+
       if (testData) {
-        dataId += 1
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        dataId += 1;
+        dispatch({ type: 'CREATE', data: { author, contents, emotion, id: dataId } })
       } else {
         dataId.current += 1;
+        dispatch({ type: 'CREATE', data: { author, contents, emotion, id: dataId.current } })
       }
-      setData((data) => [newItem, ...data])
     }, []);
 
 
 
   // 딜리트
-  const onRemove = (targetId) => {
+  const onRemove = useCallback((targetId) => {
+
+    dispatch({ type: "REMOVE", targetId })
     const newDiaryList = data.filter((el) => el.id !== targetId);
     const checkData = localStorage.getItem("data");
     if (checkData) {
@@ -66,17 +89,17 @@ function App() {
     if (newDiaryList.length) {
       localStorage.setItem("data", JSON.stringify(newDiaryList));
     }
-    setData(newDiaryList);
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // 수정하기
-  const onUpdate = (targetId, newContents) => {
-    setData(
-      data.map((el) => el.id === targetId ? { ...el, contents: newContents } : el)
-    )
-  }
+  const onUpdate = useCallback((targetId, newContents) => {
+    dispatch({ type: "UPDATE", targetId, newContents })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
+  // data state변경 시 로컬스토리지 값도 변경
   useEffect(() => {
     if (data.length === 0) {
       return
@@ -85,14 +108,11 @@ function App() {
     localStorage.setItem("data", JSON.stringify(data))
   }, [data])
 
+  // mouted localstorage 값 체크
   useEffect(() => {
-    // getData();
     const localListData = localStorage.getItem("data");
     if (localListData) {
-      const loadLocalStorage = () => {
-        setData(JSON.parse(localListData))
-      }
-      loadLocalStorage()
+      dispatch({ type: "LOCALSTORAGE", data: JSON.parse(localListData) })
     }
   }, [])
 
@@ -103,6 +123,7 @@ function App() {
       const goodRatio = (goodCount / data.length) * 100;
       const diaryLength = data.length;
       return { goodCount, badCount, goodRatio, diaryLength };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data.length]);
 
   const diaryAnalysis = getDiaryAnalysis;
