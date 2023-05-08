@@ -53,8 +53,6 @@ function App() {
     localStorage.setItem('darkmode', JSON.stringify(checked));
   };
 
-  // const [data, setData] = useState([]);
-
   const [data, dispatch] = useReducer(reducer, []);
 
   const testData = JSON.parse(localStorage.getItem("data"));

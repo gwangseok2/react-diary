@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 
 const DiaryEditor = ({ onCreate }) => {
 
-  useEffect(() => console.log("diaryEditor 랜더"))
 
   // react에서의 dom조작
   const authorInput = useRef();
