@@ -1,7 +1,10 @@
-import React, { useRef, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
+import { DiaryDispatchContext } from "./App";
 
-const DiaryEditor = ({ onCreate }) => {
+const DiaryEditor = () => {
 
+  // 객체로 넣었기 때문에 객체의 비구조화 할당으로 가져옴 
+  const { onCreate } = useContext(DiaryDispatchContext);
 
   // react에서의 dom조작
   const authorInput = useRef();

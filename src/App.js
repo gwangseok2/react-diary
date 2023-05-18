@@ -1,8 +1,7 @@
-import { useRef, useEffect, useMemo, useCallback, useReducer } from 'react';
+import React, { useRef, useEffect, useMemo, useCallback, useReducer } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
-import * as React from 'react';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 // https://jsonplaceholder.typicode.com/comments
@@ -30,21 +29,14 @@ const reducer = (state, action) => {
   }
 }
 
+// context 독립 필요
+export const DiaryStateContext = React.createContext();
+
+// 재랜더방지
+export const DiaryDispatchContext = React.createContext();
+
 function App() {
   const darkModeCheck = JSON.parse(localStorage.getItem('darkmode'));
-
-  // const getData = async () => {
-  //   const res = await fetch('https://jsonplaceholder.typicode.com/comments').then((res) => res.json());
-  //   console.log(res);
-  //   const initData = res.slice(0, 20).map((el) => {
-  //     return {
-  //       auhotr: el.email,
-  //       contents: el.body,
-  //       emotion: Math.floor(Math.random() * 5) + 1,
-  //     }
-  //   })
-  //   console.log(initData, 'dasd');
-  // }
 
   // 다크모드 관련 스테이트
   const [isDarkMode, setDarkMode] = React.useState(darkModeCheck ? true : false);
@@ -52,6 +44,7 @@ function App() {
     setDarkMode(checked);
     localStorage.setItem('darkmode', JSON.stringify(checked));
   };
+
 
   const [data, dispatch] = useReducer(reducer, []);
 
@@ -122,20 +115,30 @@ function App() {
       const diaryLength = data.length;
       return { goodCount, badCount, goodRatio, diaryLength };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.length]);
+    }, [data.length]
+  );
+
+  const memoizedDispatches = useMemo(() => {
+    return { onCreate, onRemove, onUpdate }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const diaryAnalysis = getDiaryAnalysis;
   return (
-    <div className={isDarkMode ? 'App dark' : 'App'} >
-      <DiaryEditor onCreate={onCreate} />
-      {data.length > 0 && <DiaryList diaryList={data} onRemove={onRemove} onUpdate={onUpdate} diaryAnalysis={diaryAnalysis} />}
-      <DarkModeSwitch
-        style={{ marginBottom: '2rem', position: 'fixed', left: '1.333%', top: '20px' }}
-        checked={isDarkMode}
-        onChange={toggleDarkMode}
-        size={80}
-      />
-    </div >
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className={isDarkMode ? 'App dark' : 'App'} >
+          <DiaryEditor />
+          {data.length > 0 && <DiaryList diaryAnalysis={diaryAnalysis} />}
+          <DarkModeSwitch
+            style={{ marginBottom: '2rem', position: 'fixed', left: '1.333%', top: '20px' }}
+            checked={isDarkMode}
+            onChange={toggleDarkMode}
+            size={80}
+          />
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 }
 
